@@ -1,29 +1,32 @@
 def find_size_of_basin(numbers, starting_index):
-    visited_indexes = set()
+    seen_indices = {starting_index}
     to_visit_indexes = [starting_index]
 
     while len(to_visit_indexes) > 0:
         current_index = to_visit_indexes.pop()
-        visited_indexes.add(current_index)
         i,j = current_index
         if i > 0:
             candidate = numbers[i-1][j]
-            if candidate !=9 and (i-1,j) not in visited_indexes:
+            if candidate !=9 and (i-1,j) not in seen_indices:
+                seen_indices.add((i-1,j))
                 to_visit_indexes.append((i-1,j))
         if i< number_of_rows-1:
             candidate = numbers[i+1][j]
-            if candidate !=9 and (i+1,j) not in visited_indexes:
+            if candidate !=9 and (i+1,j) not in seen_indices:
+                seen_indices.add((i+1,j))
                 to_visit_indexes.append((i+1,j))
         if j > 0:
             candidate = numbers[i][j-1]
-            if candidate !=9 and (i,j-1) not in visited_indexes:
+            if candidate !=9 and (i,j-1) not in seen_indices:
+                seen_indices.add((i,j-1))
                 to_visit_indexes.append((i,j-1))
         if j< number_of_columns-1:
             candidate = numbers[i][j+1]
-            if candidate !=9 and (i,j+1) not in visited_indexes:
+            if candidate !=9 and (i,j+1) not in seen_indices:
+                seen_indices.add((i,j+1))
                 to_visit_indexes.append((i,j+1))
 
-    return len(visited_indexes)
+    return len(seen_indices)
 
 with open('./input.txt') as f:
     numbers=[[int(n) for n in l.strip()] for l in f.readlines()]
